@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a1120" />
+  <meta name="description" content="FluidLab: simulador de flujos laminares, viscosidad y balances de momento." />
+  <title>FluidLab | Simulador de mecánica de fluidos</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="identity">
+        <div class="logo-mark"><svg viewBox="0 0 45 45" role="img" aria-label="FluidLab"><path d="M4 26c7-9 11 7 18-2S33 7 41 18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M4 34c7-9 11 7 18-2s11-17 19-6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".5"/></svg></div>
+        <div><strong>Fluid<span>Lab</span></strong><small>Physics workspace</small></div>
+      </div>
+      <div class="nav-section-name">LABORATORIO</div>
+      <nav id="moduleNav" aria-label="Módulos de cálculo">
+        <button class="nav-item active" data-module="film"><span class="nav-ico">≈</span><span>Película descendente</span><span class="nav-num">01</span></button>
+        <button class="nav-item" data-module="pipe"><span class="nav-ico">◎</span><span>Tubería circular</span><span class="nav-num">02</span></button>
+        <button class="nav-item" data-module="plates"><span class="nav-ico">☰</span><span>Placas paralelas</span><span class="nav-num">03</span></button>
+        <button class="nav-item" data-module="viscosity"><span class="nav-ico">≋</span><span>Viscosidad</span><span class="nav-num">04</span></button>
+        <button class="nav-item" data-module="annulus"><span class="nav-ico">◉</span><span>Tubos concéntricos</span><span class="nav-num">05</span></button>
+        <button class="nav-item" data-module="couette"><span class="nav-ico">▰</span><span>Dos placas móviles</span><span class="nav-num">06</span></button>
+        <button class="nav-item" data-module="gas"><span class="nav-ico">◌</span><span>Viscosidad de gases</span><span class="nav-num">07</span></button>
+        <button class="nav-item" data-module="metal"><span class="nav-ico">♜</span><span>Metales líquidos</span><span class="nav-num">08</span></button>
+        <button class="nav-item" data-module="mixture"><span class="nav-ico">⧉</span><span>Viscosidad de mezclas</span><span class="nav-num">09</span></button>
+      </nav>
+      <div class="sidebar-bottom"><span class="online-dot"></span> MOTOR CIENTÍFICO ACTIVO <span class="version">v2.0</span></div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="breadcrumb"><span>Laboratorio</span><span class="chevron">/</span><span id="breadcrumbCurrent">Película descendente</span></div>
+        <div class="top-actions"><span class="engine-chip"><span class="online-dot"></span> Python Engine</span><button class="top-icon" id="btnReset" title="Restaurar ejemplo">↺ <span>Restaurar</span></button></div>
+      </header>
+      <main class="workspace">
+        <div class="hero-row">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> MECÁNICA DE FLUIDOS · CAPÍTULO II</div>
+            <h1 id="pageTitle">Película descendente</h1>
+            <p class="hero-subtitle" id="pageDescription">Analiza un fluido viscoso descendiendo por una pared inclinada.</p>
+          </div>
+          <div class="hero-tag" id="heroTag"><span>◈</span> FLUJO LAMINAR</div>
+        </div>
+        <div class="workspace-grid">
+          <div class="left-column">
+            <section class="panel input-panel">
+              <div class="panel-header"><div class="header-icon">⚙</div><div><h2>Parámetros de entrada</h2><p>Configura el sistema físico</p></div><span class="step-label">01 / INPUT</span></div>
+              <div class="input-body">
+                <div id="standardFluidInputs">
+                <label class="field-label" for="fluidSelect">FLUIDO DE REFERENCIA <span class="optional-label">valores aproximados a 20 °C</span></label>
+                <div class="select-wrap"><select id="fluidSelect"><option value="glycerin">Glicerina ≈ 20 °C</option><option value="water">Agua ≈ 20 °C</option><option value="air">Aire ≈ 20 °C</option><option value="oil">Aceite mineral (ejemplo)</option><option value="manual">Personalizado</option></select></div>
+                <div class="two-fields" style="margin-top:18px"><div class="field"><label for="rho">Densidad ρ <small>kg/m³</small></label><input id="rho" name="rho" type="number" step="any" inputmode="decimal" value="1260"/></div><div class="field"><label for="viscosity_value"><span id="viscosityLabel">Viscosidad dinámica μ</span> <small id="viscosityUnit">Pa·s</small></label><input id="viscosity_value" name="viscosity_value" type="number" step="any" inputmode="decimal" value="1.49" /></div></div>
+                <div class="viscosity-toggle"><span>Tipo de viscosidad</span><div class="segmented" role="group" aria-label="Tipo de viscosidad"><button data-viscosity="dynamic" class="selected">Dinámica μ</button><button data-viscosity="kinematic">Cinemática ν</button></div></div>
+                </div>
+                <div class="section-divider"><span id="parametersHeading">GEOMETRÍA Y OPERACIÓN</span></div>
+                <div id="dynamicFields" class="dynamic-fields"></div>
+                <div class="form-footer"><button class="calculate-btn" id="btnCalculate">▶ <span>Resolver problema</span> <span class="btn-arrow">→</span></button><p class="input-hint">Unidades SI · Se verifica el modelo físico</p></div>
+              </div>
+            </section>
+            <section class="panel geometry-panel"><div class="compact-header"><span class="caption-index">FIG. 01</span><h3>Configuración del sistema</h3></div><div class="geometry-content" id="geometryView"></div><p class="geometry-footnote" id="geometryNote"></p></section>
+          </div>
+          <div class="right-column">
+            <section class="results-wrap" id="resultsSection">
+              <div class="results-heading"><div><span class="small-overline">RESULTADOS DEL MODELO</span><h2>Solución numérica</h2></div><span class="calculated-flag" id="calculatedFlag"><span>●</span> Calculado</span></div>
+              <div class="metrics-grid" id="metricsGrid"></div>
+              <div class="regime-card" id="regimeCard"><span class="regime-icon">◉</span><div><strong id="regimeTitle">Comprobando régimen...</strong><p id="regimeDetail"></p></div><span id="regimeRe" class="regime-re"></span></div>
+            </section>
+            <section class="panel chart-panel"><div class="chart-header"><div><span class="small-overline">VISUALIZACIÓN FÍSICA</span><h2>Perfiles de flujo</h2></div><div class="chart-legend"><i></i><span>Perfil analítico</span></div></div><div class="chart-tabs" role="tablist"><button data-chart="profile" class="active">Perfil de velocidad</button><button data-chart="stress">Esfuerzo cortante</button></div><div class="chart-canvas"><svg id="graph" viewBox="0 0 780 305" role="img" aria-label="Gráfica de perfil de flujo"></svg></div><div class="chart-footer"><span id="chartFootnote">Perfil ideal bajo hipótesis laminar</span><button id="btnCSV" class="text-action">↓ Exportar CSV</button></div></section>
+            <section class="panel equation-panel"><div class="equation-heading"><div><span class="small-overline">FORMULACIÓN FÍSICA</span><h2>Ecuaciones y solución</h2></div><span class="ref-badge" id="referenceLabel">CAP. II</span></div><div id="equationsList" class="equations-list"></div><details class="derivation-panel" open><summary>Procedimiento de resolución <span class="expand-arrow">⌄</span></summary><div id="stepsList" class="steps-list"></div></details></section>
+            <section class="notes-panel"><div class="note-heading">✳ <strong>Hipótesis y observaciones</strong></div><ul id="observationsList"></ul><p id="modelNotice"></p></section>
+          </div>
+        </div>
+        <footer class="footer"><span>FluidLab · Fundamentos de transporte de cantidad de movimiento</span><span>Python · HTML · CSS · JavaScript</span></footer>
+      </main>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
